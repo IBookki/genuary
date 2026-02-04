@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 22: Pen plotter ready</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+
+        stroke(0);
+        strokeWeight(1.5);
+        noFill();
+
+        // Create a pen plotter compatible pattern
+        // Using only continuous lines without fill
+
+        let spacing = 40;
+        let time = frameCount * 0.01;
+
+        // Horizontal wave pattern
+        for (let y = 50; y < height - 50; y += spacing) {
+          beginShape();
+          for (let x = 50; x < width - 50; x += 5) {
+            let offsetY = sin(x / 100 + time) * 20 + y;
+            vertex(x, offsetY);
+          }
+          endShape();
+        }
+
+        // Vertical lines with wave
+        for (let x = 50; x < width - 50; x += spacing) {
+          beginShape();
+          for (let y = 50; y < height - 50; y += 5) {
+            let offsetX = cos(y / 100 + time) * 20 + x;
+            vertex(offsetX, y);
+          }
+          endShape();
+        }
+
+        // Diagonal lines
+        stroke(0);
+        strokeWeight(1);
+        for (let i = -width; i < height + width; i += 60) {
+          line(i, 0, i + height, height);
+        }
+
+        // Info
+        fill(0);
+        textSize(12);
+        text("Pen plotter compatible - continuous lines only", 20, 30);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 8: A City</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let buildings = [];
+
+      function setup() {
+        createCanvas(800, 600);
+        generateCity();
+      }
+
+      function generateCity() {
+        buildings = [];
+        let x = 0;
+        while (x < width) {
+          let width_building = random(30, 80);
+          let height_building = random(100, 300);
+          let windows = floor(random(1, 5));
+          buildings.push({
+            x: x,
+            y: height - height_building,
+            w: width_building,
+            h: height_building,
+            windows: windows,
+            color: color(random(50, 150), random(50, 150), random(50, 150)),
+          });
+          x += width_building + random(5, 15);
+        }
+      }
+
+      function draw() {
+        background(135, 206, 235);
+
+        // Sky gradient
+        for (let i = 0; i < height / 2; i++) {
+          let c = lerpColor(
+            color(135, 206, 235),
+            color(255, 200, 100),
+            i / (height / 2)
+          );
+          stroke(c);
+          line(0, i, width, i);
+        }
+
+        // Draw buildings
+        for (let building of buildings) {
+          fill(building.color);
+          rect(building.x, building.y, building.w, building.h);
+
+          // Draw windows
+          let windowSize = 5;
+          let padding = 2;
+          let windowsPerRow = floor(building.w / (windowSize + padding));
+          let windowsPerCol = floor(building.h / (windowSize + padding));
+
+          for (let i = 0; i < building.windows; i++) {
+            for (let j = 0; j < windowsPerCol - 2; j++) {
+              let wx =
+                building.x +
+                padding +
+                (i % windowsPerRow) * (windowSize + padding);
+              let wy = building.y + padding + j * (windowSize + padding);
+              fill(255, 255, random(100, 200));
+              rect(wx, wy, windowSize, windowSize);
+            }
+          }
+        }
+
+        // Ground
+        fill(100, 150, 100);
+        rect(0, height / 2, width, height / 2);
+      }
+
+      function mousePressed() {
+        generateCity();
+      }
+    </script>
+  </body>
+</html>

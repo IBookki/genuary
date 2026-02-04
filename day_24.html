@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 24: Perfectionist's nightmare</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(240);
+
+        // Grid that's almost perfect but slightly off
+        let gridSize = 50;
+        let rows = floor(height / gridSize);
+        let cols = floor(width / gridSize);
+
+        stroke(0);
+        strokeWeight(1);
+
+        for (let i = 0; i <= rows; i++) {
+          for (let j = 0; j <= cols; j++) {
+            let x = j * gridSize;
+            let y = i * gridSize;
+
+            // Add tiny random offsets to make it imperfect
+            let offset = noise(i * 0.1, j * 0.1, frameCount * 0.01) * 2 - 1;
+
+            // Draw slightly off rectangles
+            let rectX = x + offset * 3;
+            let rectY = y + offset * 3;
+            let rectSize = gridSize - abs(offset) * 5;
+
+            fill(200 + offset * 20);
+            rect(rectX, rectY, rectSize, rectSize);
+          }
+        }
+
+        // Add circles that are almost aligned
+        fill(100, 100, 255, 100);
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            let x = (j + 0.5) * gridSize + sin(i * 0.2 + frameCount * 0.01) * 5;
+            let y = (i + 0.5) * gridSize + cos(j * 0.2 + frameCount * 0.01) * 5;
+
+            circle(x, y, gridSize * 0.3);
+          }
+        }
+
+        // Text that's slightly rotated
+        push();
+        translate(width / 2, height / 2);
+        rotate(0.05);
+        fill(0);
+        textSize(32);
+        textAlign(CENTER);
+        text("Almost Perfect", 0, 0);
+        pop();
+      }
+    </script>
+  </body>
+</html>

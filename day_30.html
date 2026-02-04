@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 30: It's not a bug, it's a feature</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let glitchAmount = 0;
+
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(20);
+
+        glitchAmount = abs(sin(frameCount * 0.01)) * 100;
+
+        // Draw the "intended" design
+        stroke(0, 255, 0);
+        strokeWeight(2);
+        fill(0, 100, 0, 50);
+        rect(100, 100, 600, 600);
+
+        // Add intentional glitches as features
+        let glitchIntensity = abs(sin(frameCount * 0.02));
+
+        // Horizontal scanline glitch
+        for (let y = 100; y < 700; y += 20) {
+          if (random() < glitchIntensity * 0.5) {
+            stroke(255, 100, 100);
+            strokeWeight(floor(random(1, 4)));
+            let offsetX = random(-30, 30) * glitchIntensity;
+            line(100 + offsetX, y, 700 + offsetX, y);
+          }
+        }
+
+        // RGB split glitch
+        colorMode(HSB);
+        for (let i = 0; i < 3; i++) {
+          let offset = glitchAmount * (i - 1);
+          let hue = (frameCount + i * 120) % 360;
+          stroke(hue, 255, 255, 100);
+          strokeWeight(2);
+
+          circle(width / 2 + offset, height / 2 + offset, 200);
+        }
+        colorMode(RGB);
+
+        // Pixel block glitch
+        for (let i = 0; i < 50; i++) {
+          if (random() < glitchIntensity) {
+            let x = random(100, 700);
+            let y = random(100, 700);
+            let size = random(5, 50);
+            fill(random(255), random(255), random(255), 100);
+            rect(x, y, size, size);
+          }
+        }
+
+        // Draw text explaining the bugs are features
+        fill(0, 255, 0);
+        textSize(20);
+        text("Bug Level: " + nf(glitchIntensity, 1, 2), 20, 30);
+        text("(These are NOT bugs... they are FEATURES!)", 20, 55);
+      }
+    </script>
+  </body>
+</html>

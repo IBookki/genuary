@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 14: Everything fits perfectly</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+
+        let centerX = width / 2;
+        let centerY = height / 2;
+        let maxRadius = 300;
+
+        // Draw nested circles that fit perfectly
+        for (let i = 0; i < 10; i++) {
+          let radius = maxRadius * (1 - i / 10);
+
+          stroke(i % 2 === 0 ? 0 : 255);
+          strokeWeight(2);
+          noFill();
+
+          // Main circle
+          circle(centerX, centerY, radius * 2);
+
+          // Fit squares inside
+          let squareSize = radius * sqrt(2);
+          fill(i % 2 === 0 ? 240 : 50, (i * 25) % 256);
+          rect(
+            centerX - squareSize / 2,
+            centerY - squareSize / 2,
+            squareSize,
+            squareSize
+          );
+        }
+
+        // Draw recursive pattern that fits
+        drawFittingShapes(centerX, centerY, maxRadius, 0);
+      }
+
+      function drawFittingShapes(x, y, radius, depth) {
+        if (depth > 4 || radius < 10) return;
+
+        let numShapes = 6;
+        for (let i = 0; i < numShapes; i++) {
+          let angle = (TWO_PI / numShapes) * i;
+          let childRadius = radius / 3;
+          let childX = x + cos(angle) * (radius - childRadius);
+          let childY = y + sin(angle) * (radius - childRadius);
+
+          fill((depth * 60) % 256);
+          circle(childX, childY, childRadius * 2);
+
+          drawFittingShapes(childX, childY, childRadius, depth + 1);
+        }
+      }
+    </script>
+  </body>
+</html>

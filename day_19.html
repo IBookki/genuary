@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 19: 16x16</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let grid = [];
+
+      function setup() {
+        createCanvas(800, 800);
+        generateGrid();
+      }
+
+      function generateGrid() {
+        grid = [];
+        for (let i = 0; i < 16; i++) {
+          grid[i] = [];
+          for (let j = 0; j < 16; j++) {
+            grid[i][j] = floor(random(256));
+          }
+        }
+      }
+
+      function draw() {
+        let cellSize = width / 16;
+
+        for (let i = 0; i < 16; i++) {
+          for (let j = 0; j < 16; j++) {
+            let value = grid[i][j];
+            let hue = value;
+
+            colorMode(HSB);
+            fill(hue, 255, 255);
+            rect(j * cellSize, i * cellSize, cellSize, cellSize);
+          }
+        }
+
+        colorMode(RGB);
+
+        // Draw grid lines
+        stroke(0);
+        strokeWeight(1);
+        for (let i = 0; i <= 16; i++) {
+          line(i * cellSize, 0, i * cellSize, height);
+          line(0, i * cellSize, width, i * cellSize);
+        }
+      }
+
+      function mousePressed() {
+        generateGrid();
+      }
+    </script>
+  </body>
+</html>

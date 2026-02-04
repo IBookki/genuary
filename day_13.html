@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 13: Self portrait</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let faceVariation = 0;
+
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(220, 200, 180);
+
+        // Animate face variations
+        faceVariation = sin(frameCount * 0.01) * 0.3;
+
+        push();
+        translate(width / 2, height / 2);
+
+        // Head
+        fill(220, 180, 160);
+        stroke(100);
+        strokeWeight(3);
+        circle(0, 0, 300);
+
+        // Hair
+        fill(60);
+        arc(0, -150, 320, 200, PI, TWO_PI);
+
+        // Left eye
+        fill(255);
+        circle(-80 + faceVariation * 30, -60, 60);
+        fill(60);
+        circle(-80 + faceVariation * 30, -60, 30);
+        fill(0);
+        circle(-75 + faceVariation * 30, -55, 15);
+
+        // Right eye
+        fill(255);
+        circle(80 + faceVariation * 30, -60, 60);
+        fill(60);
+        circle(80 + faceVariation * 30, -60, 30);
+        fill(0);
+        circle(85 + faceVariation * 30, -55, 15);
+
+        // Eyebrows
+        stroke(40);
+        strokeWeight(4);
+        noFill();
+        arc(-80, -95, 50, 30, PI, 0);
+        arc(80, -95, 50, 30, PI, 0);
+
+        // Nose
+        stroke(100);
+        strokeWeight(2);
+        line(0, -30, 0, 30);
+        line(-10, 30, 0, 40);
+        line(10, 30, 0, 40);
+
+        // Mouth
+        noFill();
+        stroke(200, 100, 100);
+        strokeWeight(3);
+        arc(0, 80, 80, 50, 0, PI);
+
+        // Blush
+        fill(200, 120, 120, 100);
+        circle(-120, 20, 50);
+        circle(120, 20, 50);
+
+        pop();
+      }
+
+      function mousePressed() {
+        faceVariation = random(-0.5, 0.5);
+      }
+    </script>
+  </body>
+</html>

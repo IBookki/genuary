@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 25: Organic Geometry</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(240, 250, 240);
+
+        // Draw organic-looking shapes made from geometric primitives
+
+        // Organic blob 1 - made from circles
+        fill(100, 200, 100, 150);
+        stroke(50);
+        strokeWeight(2);
+
+        let time = frameCount * 0.01;
+
+        for (let i = 0; i < 8; i++) {
+          let angle = (TWO_PI / 8) * i;
+          let x = width * 0.3 + cos(angle) * 100 + sin(time + i) * 30;
+          let y = height * 0.3 + sin(angle) * 100 + cos(time + i) * 30;
+
+          circle(x, y, 80);
+        }
+
+        // Organic blob 2 - made from triangles
+        fill(200, 100, 100, 150);
+        for (let i = 0; i < 12; i++) {
+          let angle = (TWO_PI / 12) * i;
+          let x = width * 0.7 + cos(angle) * 120;
+          let y = height * 0.3 + sin(angle) * 120;
+          let size = 50 + sin(time * 2 + i) * 15;
+
+          triangle(
+            x,
+            y - size,
+            x - size * 0.87,
+            y + size * 0.5,
+            x + size * 0.87,
+            y + size * 0.5
+          );
+        }
+
+        // Organic flower - made from squares rotated
+        fill(150, 150, 200, 150);
+        let petalCount = 6;
+        for (let i = 0; i < petalCount; i++) {
+          push();
+          translate(width / 2, height * 0.7);
+          rotate((TWO_PI / petalCount) * i);
+          translate(80, 0);
+          rotate(frameCount * 0.01);
+
+          rect(-25, -25, 50, 50);
+
+          pop();
+        }
+
+        // Center
+        fill(255, 200, 0);
+        circle(width / 2, height * 0.7, 40);
+      }
+    </script>
+  </body>
+</html>

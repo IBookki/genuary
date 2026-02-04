@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 29: Genetic evolution and mutation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let population = [];
+      let generation = 0;
+
+      function setup() {
+        createCanvas(800, 800);
+
+        // Initialize population
+        for (let i = 0; i < 20; i++) {
+          population.push({
+            dna: {
+              size: random(20, 100),
+              r: random(255),
+              g: random(255),
+              b: random(255),
+              x: random(100, width - 100),
+              y: random(100, height - 100),
+              sides: floor(random(3, 8)),
+            },
+            fitness: 0,
+          });
+        }
+      }
+
+      function draw() {
+        background(255);
+
+        // Draw and evaluate
+        for (let creature of population) {
+          drawCreature(creature);
+          evaluateFitness(creature);
+        }
+
+        // Reproduction and mutation every 60 frames
+        if (frameCount % 60 === 0) {
+          evolve();
+          generation++;
+        }
+
+        // Info
+        fill(0);
+        textSize(16);
+        text("Generation: " + generation, 20, 30);
+      }
+
+      function drawCreature(creature) {
+        let dna = creature.dna;
+        fill(dna.r, dna.g, dna.b);
+        stroke(0);
+        strokeWeight(1);
+
+        // Draw polygon
+        let angle = TWO_PI / dna.sides;
+        beginShape();
+        for (let i = 0; i < dna.sides; i++) {
+          let x = dna.x + cos(i * angle) * dna.size;
+          let y = dna.y + sin(i * angle) * dna.size;
+          vertex(x, y);
+        }
+        endShape(CLOSE);
+      }
+
+      function evaluateFitness(creature) {
+        let dna = creature.dna;
+        // Fitness based on distance from center and size
+        let distFromCenter = dist(dna.x, dna.y, width / 2, height / 2);
+        creature.fitness = 1 / (1 + distFromCenter / 100) + dna.size / 200;
+      }
+
+      function evolve() {
+        // Sort by fitness
+        population.sort((a, b) => b.fitness - a.fitness);
+
+        // Keep top half
+        population = population.slice(0, 10);
+
+        // Breed and mutate
+        let newPopulation = [];
+        for (let i = 0; i < population.length; i++) {
+          newPopulation.push(JSON.parse(JSON.stringify(population[i])));
+        }
+
+        for (let i = 0; i < 10; i++) {
+          let child = JSON.parse(
+            JSON.stringify(population[floor(random(population.length))])
+          );
+
+          // Mutate
+          child.dna.size += random(-10, 10);
+          child.dna.r += random(-20, 20);
+          child.dna.g += random(-20, 20);
+          child.dna.b += random(-20, 20);
+          child.dna.x += random(-50, 50);
+          child.dna.y += random(-50, 50);
+
+          // Constrain
+          child.dna.size = constrain(child.dna.size, 20, 100);
+          child.dna.r = constrain(child.dna.r, 0, 255);
+          child.dna.g = constrain(child.dna.g, 0, 255);
+          child.dna.b = constrain(child.dna.b, 0, 255);
+          child.dna.x = constrain(child.dna.x, 50, width - 50);
+          child.dna.y = constrain(child.dna.y, 50, height - 50);
+
+          newPopulation.push(child);
+        }
+
+        population = newPopulation;
+      }
+    </script>
+  </body>
+</html>

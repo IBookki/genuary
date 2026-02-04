@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 21: Bauhaus Poster</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(240, 230, 200);
+
+        // Color palette inspired by Bauhaus
+        let colors = [
+          color(255, 0, 0), // Red
+          color(0, 0, 255), // Blue
+          color(255, 200, 0), // Yellow
+          color(0, 0, 0), // Black
+          color(200, 0, 200), // Magenta
+        ];
+
+        // Large geometric shapes
+
+        // Red rectangle
+        fill(colors[0]);
+        rect(50, 50, 250, 400);
+
+        // Blue circle
+        fill(colors[1]);
+        circle(600, 250, 300);
+
+        // Yellow triangle
+        fill(colors[3]);
+        triangle(100, 550, 250, 750, 350, 550);
+
+        // Black diagonal line
+        stroke(colors[3]);
+        strokeWeight(8);
+        line(400, 200, 700, 600);
+
+        // Magenta squares
+        fill(colors[4]);
+        for (let i = 0; i < 3; i++) {
+          rect(500 + i * 80, 550, 60, 60);
+        }
+
+        // Typography-inspired text
+        fill(0);
+        textSize(48);
+        textStyle(BOLD);
+        text("BAUHAUS", 150, 750);
+
+        // Small geometric accents
+        stroke(colors[1]);
+        strokeWeight(2);
+        noFill();
+        rect(50, 500, 100, 100);
+        circle(250, 700, 80);
+      }
+    </script>
+  </body>
+</html>

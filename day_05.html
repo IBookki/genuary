@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 5: Write Genuary</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+        fill(0);
+        stroke(0);
+        strokeWeight(4);
+        noFill();
+
+        // Draw "GENUARY" using geometric shapes
+        let x = 50;
+        let y = 400;
+        let spacing = 100;
+
+        // G
+        arc(x, y, 80, 80, PI / 4, (7 * PI) / 4, OPEN);
+        line(x + 30, y, x + 30, y + 20);
+
+        // E
+        x += spacing;
+        line(x - 30, y - 40, x - 30, y + 40);
+        line(x - 30, y - 40, x + 30, y - 40);
+        line(x - 30, y, x + 20, y);
+        line(x - 30, y + 40, x + 30, y + 40);
+
+        // N
+        x += spacing;
+        line(x - 30, y + 40, x - 30, y - 40);
+        line(x - 30, y - 40, x + 30, y + 40);
+        line(x + 30, y + 40, x + 30, y - 40);
+
+        // U
+        x += spacing;
+        line(x - 30, y - 40, x - 30, y + 20);
+        arc(x, y + 30, 60, 60, 0, PI);
+        line(x + 30, y - 40, x + 30, y + 20);
+
+        // A
+        x += spacing;
+        line(x - 30, y + 40, x, y - 40);
+        line(x, y - 40, x + 30, y + 40);
+        line(x - 15, y, x + 15, y);
+
+        // R
+        x += spacing;
+        line(x - 30, y + 40, x - 30, y - 40);
+        arc(x - 30, y - 20, 60, 60, -PI / 2, PI / 2);
+        line(x, y, x + 30, y + 40);
+
+        // Y
+        x += spacing;
+        line(x - 30, y - 40, x, y);
+        line(x + 30, y - 40, x, y);
+        line(x, y, x, y + 40);
+      }
+    </script>
+  </body>
+</html>

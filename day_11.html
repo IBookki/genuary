@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 11: Quine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      pre {
+        margin: 20px;
+        font-family: monospace;
+        font-size: 10px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <pre id="quine"></pre>
+    <script>
+      const quineCode = `(function(){const q="(function(){const q=__QUINE__;console.log(q.replace(/__QUINE__/,JSON.stringify(q)));const s=q.replace(/__QUINE__/,JSON.stringify(q));document.getElementById('quine').innerText=s;})()";console.log(q.replace(/__QUINE__/,JSON.stringify(q)));const s=q.replace(/__QUINE__/,JSON.stringify(q));document.getElementById('quine').innerText=s;})()`;
+
+      function setup() {
+        createCanvas(800, 400);
+        background(255);
+        fill(0);
+        textSize(10);
+        textFont("monospace");
+
+        let y = 30;
+        let lines = quineCode.split("\n");
+
+        for (let line of lines) {
+          text(line, 20, y);
+          y += 15;
+        }
+      }
+
+      function draw() {
+        // Self-referential drawing
+        fill(0);
+        textSize(12);
+        text(
+          "This is a Quine - code that outputs its own source",
+          20,
+          height - 20
+        );
+      }
+    </script>
+  </body>
+</html>

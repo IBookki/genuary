@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 12: Boxes only</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let boxes = [];
+
+      function setup() {
+        createCanvas(800, 800);
+        generateBoxes();
+      }
+
+      function generateBoxes() {
+        boxes = [];
+
+        function subdivide(x, y, w, h, depth) {
+          if (depth === 0 || w < 10 || h < 10) {
+            boxes.push({ x, y, w, h, depth });
+            return;
+          }
+
+          // Randomly subdivide
+          if (random() > 0.3) {
+            // Horizontal split
+            let splitY = random(0.3, 0.7) * h;
+            subdivide(x, y, w, splitY, depth - 1);
+            subdivide(x, y + splitY, w, h - splitY, depth - 1);
+          } else {
+            // Vertical split
+            let splitX = random(0.3, 0.7) * w;
+            subdivide(x, y, splitX, h, depth - 1);
+            subdivide(x + splitX, y, w - splitX, h, depth - 1);
+          }
+        }
+
+        subdivide(0, 0, width, height, 5);
+      }
+
+      function draw() {
+        background(255);
+
+        for (let box of boxes) {
+          // Color based on depth
+          let c = map(box.depth, 0, 5, 0, 255);
+          stroke(c);
+          strokeWeight(2);
+          noFill();
+          rect(box.x, box.y, box.w, box.h);
+
+          // Add some animated boxes
+          if (frameCount % 60 < 30) {
+            strokeWeight(1);
+            stroke(0, 100);
+            rect(box.x + 2, box.y + 2, box.w - 4, box.h - 4);
+          }
+        }
+      }
+
+      function mousePressed() {
+        generateBoxes();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 20: One line</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+
+        stroke(0);
+        strokeWeight(2);
+        noFill();
+
+        // Draw a continuous line that creates a complex pattern
+        beginShape();
+
+        let time = frameCount * 0.01;
+        let points = 500;
+
+        for (let i = 0; i < points; i++) {
+          let t = i / points;
+
+          // Lissajous curve
+          let x = width / 2 + sin(t * TWO_PI * 3 + time) * 200;
+          let y = height / 2 + cos(t * TWO_PI * 5 + time) * 200;
+
+          // Add some variation
+          x += sin(t * TWO_PI * 7) * 30;
+          y += cos(t * TWO_PI * 11) * 30;
+
+          vertex(x, y);
+        }
+
+        endShape(CLOSE);
+
+        // Draw it again with slight offset for effect
+        push();
+        stroke(0, 100);
+        strokeWeight(1);
+        beginShape();
+        for (let i = 0; i < points; i++) {
+          let t = i / points;
+          let x =
+            width / 2 + sin(t * TWO_PI * 3 + frameCount * 0.01 + 0.5) * 200;
+          let y =
+            height / 2 + cos(t * TWO_PI * 5 + frameCount * 0.01 + 0.5) * 200;
+          x += sin(t * TWO_PI * 7) * 30;
+          y += cos(t * TWO_PI * 11) * 30;
+          vertex(x, y);
+        }
+        endShape(CLOSE);
+        pop();
+      }
+    </script>
+  </body>
+</html>

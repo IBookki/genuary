@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 2: Twelve principles of animation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let circleSize = 0;
+      let growing = true;
+
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+        fill(0);
+
+        // Squash & stretch
+        if (growing) {
+          circleSize += 3;
+          if (circleSize > 200) growing = false;
+        } else {
+          circleSize -= 3;
+          if (circleSize < 50) growing = true;
+        }
+
+        circle(width / 2, height / 2, circleSize);
+      }
+    </script>
+  </body>
+</html>

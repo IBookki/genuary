@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 10: Polar coordinates</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+        translate(width / 2, height / 2);
+
+        stroke(0);
+        strokeWeight(2);
+        noFill();
+
+        // Polar rose curves
+        let layers = 3;
+        let colors = [color(255, 0, 0), color(0, 255, 0), color(0, 0, 255)];
+
+        for (let layer = 0; layer < layers; layer++) {
+          stroke(colors[layer]);
+          beginShape();
+
+          let petals = 5 + layer * 2;
+          let maxRadius = 100 + layer * 60;
+
+          for (let angle = 0; angle < TWO_PI; angle += 0.05) {
+            // Polar rose: r = cos(k * θ)
+            let k = petals;
+            let r = maxRadius * cos(k * angle);
+
+            let x = r * cos(angle);
+            let y = r * sin(angle);
+
+            vertex(x, y);
+          }
+
+          endShape(CLOSE);
+        }
+
+        // Draw spirals
+        stroke(0);
+        strokeWeight(1);
+        beginShape();
+        for (let angle = 0; angle < TWO_PI * 3; angle += 0.1) {
+          let r = 50 + angle * 20;
+          let x = r * cos(angle);
+          let y = r * sin(angle);
+          vertex(x, y);
+        }
+        endShape();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 9: Crazy automaton</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let grid = [];
+      let rows = 40,
+        cols = 40;
+
+      function setup() {
+        createCanvas(800, 800);
+        initializeGrid();
+      }
+
+      function initializeGrid() {
+        grid = [];
+        for (let i = 0; i < rows; i++) {
+          grid[i] = [];
+          for (let j = 0; j < cols; j++) {
+            grid[i][j] = random() > 0.7;
+          }
+        }
+      }
+
+      function draw() {
+        let cellSize = width / cols;
+
+        background(255);
+
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            let x = j * cellSize;
+            let y = i * cellSize;
+
+            let neighbors = countNeighbors(i, j);
+
+            // Crazy rule: if neighbors % 3 == 1, cell is alive
+            let newState = neighbors % 3 === 1;
+
+            fill(newState ? 0 : 255);
+            stroke(200);
+            strokeWeight(0.5);
+            rect(x, y, cellSize, cellSize);
+          }
+        }
+
+        if (frameCount % 5 === 0) {
+          updateGrid();
+        }
+      }
+
+      function countNeighbors(i, j) {
+        let count = 0;
+        for (let di = -1; di <= 1; di++) {
+          for (let dj = -1; dj <= 1; dj++) {
+            let ni = (i + di + rows) % rows;
+            let nj = (j + dj + cols) % cols;
+            if (grid[ni][nj]) count++;
+          }
+        }
+        return count;
+      }
+
+      function updateGrid() {
+        let newGrid = [];
+        for (let i = 0; i < rows; i++) {
+          newGrid[i] = [];
+          for (let j = 0; j < cols; j++) {
+            let neighbors = countNeighbors(i, j);
+            newGrid[i][j] = neighbors % 3 === 1;
+          }
+        }
+        grid = newGrid;
+      }
+
+      function mousePressed() {
+        initializeGrid();
+      }
+    </script>
+  </body>
+</html>

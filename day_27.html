@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 27: Lifeform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let lifeforms = [];
+
+      function setup() {
+        createCanvas(800, 800);
+
+        // Create lifeforms
+        for (let i = 0; i < 3; i++) {
+          lifeforms.push({
+            x: random(200, width - 200),
+            y: random(200, height - 200),
+            size: random(50, 150),
+            growthRate: random(0.98, 1.02),
+            angle: random(TWO_PI),
+            segments: [],
+          });
+        }
+      }
+
+      function draw() {
+        background(30);
+
+        // Draw and update lifeforms
+        for (let lifeform of lifeforms) {
+          drawLifeform(lifeform);
+          updateLifeform(lifeform);
+        }
+      }
+
+      function drawLifeform(lifeform) {
+        push();
+        translate(lifeform.x, lifeform.y);
+        rotate(lifeform.angle);
+
+        // Draw growing structure
+        let size = lifeform.size;
+        fill(100, 255, 100, 150);
+        stroke(50, 200, 50);
+        strokeWeight(2);
+
+        // Core
+        circle(0, 0, size);
+
+        // Growing tentacles
+        for (let i = 0; i < 6; i++) {
+          let angle = (TWO_PI / 6) * i;
+          let tentacleLength =
+            size * 0.3 + sin(frameCount * 0.05 + i) * size * 0.2;
+
+          let x1 = cos(angle) * size * 0.5;
+          let y1 = sin(angle) * size * 0.5;
+          let x2 = cos(angle) * (size * 0.5 + tentacleLength);
+          let y2 = sin(angle) * (size * 0.5 + tentacleLength);
+
+          line(x1, y1, x2, y2);
+
+          // Branches
+          for (let j = 0; j < 3; j++) {
+            let branchAngle = angle + (random() - 0.5) * 0.5;
+            let branchX = x2 + cos(branchAngle) * 20;
+            let branchY = y2 + sin(branchAngle) * 20;
+
+            line(x2, y2, branchX, branchY);
+            circle(branchX, branchY, 5);
+          }
+        }
+
+        pop();
+      }
+
+      function updateLifeform(lifeform) {
+        // Move and grow
+        lifeform.size *= lifeform.growthRate;
+        if (lifeform.size > 180) lifeform.growthRate = 0.98;
+        if (lifeform.size < 50) lifeform.growthRate = 1.02;
+
+        // Wander
+        lifeform.x += sin(frameCount * 0.01 + lifeform.x) * 2;
+        lifeform.y += cos(frameCount * 0.01 + lifeform.y) * 2;
+
+        // Stay in bounds
+        lifeform.x = constrain(lifeform.x, 100, width - 100);
+        lifeform.y = constrain(lifeform.y, 100, height - 100);
+
+        lifeform.angle += 0.01;
+      }
+    </script>
+  </body>
+</html>

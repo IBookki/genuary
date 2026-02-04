@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 18: Unexpected path</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let paths = [];
+
+      function setup() {
+        createCanvas(800, 800);
+        generatePaths();
+      }
+
+      function generatePaths() {
+        paths = [];
+
+        for (let p = 0; p < 5; p++) {
+          let path = [];
+          let x = random(width);
+          let y = random(height);
+          let direction = random(TWO_PI);
+
+          for (let i = 0; i < 200; i++) {
+            path.push({ x, y });
+
+            // Simple rule: turn if we're getting close to the edge
+            let distToEdge = min(x, y, width - x, height - y);
+
+            if (distToEdge < 50) {
+              direction += HALF_PI + random(-0.3, 0.3);
+            }
+
+            // Sometimes turn randomly based on distance from center
+            let distToCenter = dist(x, y, width / 2, height / 2);
+            if (random() < 0.1 * (distToCenter / (width / 2))) {
+              direction += random(-PI, PI);
+            }
+
+            x += cos(direction) * 5;
+            y += sin(direction) * 5;
+          }
+
+          paths.push(path);
+        }
+      }
+
+      function draw() {
+        background(20);
+
+        // Draw paths with gradient
+        for (let p = 0; p < paths.length; p++) {
+          let path = paths[p];
+          stroke(100 + p * 30, 100, 200 - p * 30);
+          strokeWeight(2);
+          noFill();
+
+          beginShape();
+          for (let point of path) {
+            vertex(point.x, point.y);
+          }
+          endShape();
+        }
+
+        // Draw instruction
+        fill(255);
+        textSize(14);
+        text("Click to regenerate paths", 20, 30);
+      }
+
+      function mousePressed() {
+        generatePaths();
+      }
+    </script>
+  </body>
+</html>

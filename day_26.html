@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 26: Recursive Grids</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(255);
+
+        recursiveGrid(0, 0, width, height, 0);
+      }
+
+      function recursiveGrid(x, y, w, h, depth) {
+        if (depth > 5 || w < 10) return;
+
+        stroke(50);
+        strokeWeight(2 - depth * 0.3);
+        noFill();
+        rect(x, y, w, h);
+
+        let cols = 2 + depth;
+        let rows = 2 + depth;
+
+        let cellW = w / cols;
+        let cellH = h / rows;
+
+        // Fill some cells with color based on depth
+        colorMode(HSB);
+        let hue = (depth * 60) % 360;
+        fill(hue, 200, 255 - depth * 20);
+
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            // Only recurse on certain cells
+            if ((i + j) % 2 === 0) {
+              rect(x + j * cellW, y + i * cellH, cellW, cellH);
+              recursiveGrid(
+                x + j * cellW,
+                y + i * cellH,
+                cellW,
+                cellH,
+                depth + 1
+              );
+            }
+          }
+        }
+
+        colorMode(RGB);
+      }
+    </script>
+  </body>
+</html>

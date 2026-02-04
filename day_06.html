@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 6: Lights on/off</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let lightsOn = true;
+      let grid = [];
+      let rows = 8,
+        cols = 8;
+
+      function setup() {
+        createCanvas(800, 800);
+
+        // Initialize grid
+        for (let i = 0; i < rows; i++) {
+          grid[i] = [];
+          for (let j = 0; j < cols; j++) {
+            grid[i][j] = random() > 0.5;
+          }
+        }
+      }
+
+      function draw() {
+        let cellSize = width / cols;
+        lightsOn = frameCount % 120 < 60;
+
+        background(255);
+
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            let x = j * cellSize;
+            let y = i * cellSize;
+
+            if (grid[i][j] && lightsOn) {
+              fill(255, 200, 0);
+              rect(x, y, cellSize, cellSize);
+            } else {
+              fill(50);
+              rect(x, y, cellSize, cellSize);
+            }
+            stroke(100);
+            strokeWeight(2);
+            noFill();
+            rect(x, y, cellSize, cellSize);
+          }
+        }
+
+        fill(0);
+        textSize(16);
+        text(lightsOn ? "Lights ON" : "Lights OFF", 20, 30);
+      }
+
+      function mousePressed() {
+        grid = [];
+        for (let i = 0; i < rows; i++) {
+          grid[i] = [];
+          for (let j = 0; j < cols; j++) {
+            grid[i][j] = random() > 0.5;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 28: No libraries, no canvas, only HTML</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        background: #f0f0f0;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .box {
+        aspect-ratio: 1;
+        background: hsl(var(--hue), 70%, 50%);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .box:hover {
+        transform: scale(1.1);
+        filter: brightness(1.2);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .instructions {
+        text-align: center;
+        color: #666;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Genuary Day 28 - HTML Only</h1>
+    <p class="instructions">No libraries, no canvas - just HTML divs!</p>
+    <div class="container" id="container"></div>
+
+    <script>
+      const container = document.getElementById("container");
+
+      // Create grid of 64 boxes (8x8)
+      for (let i = 0; i < 64; i++) {
+        const box = document.createElement("div");
+        box.className = "box";
+
+        const hue = ((i * 360) / 64 + Date.now() / 20) % 360;
+        box.style.setProperty("--hue", hue);
+
+        box.addEventListener("click", () => {
+          box.style.setProperty("--hue", Math.random() * 360);
+        });
+
+        container.appendChild(box);
+      }
+
+      // Animate
+      setInterval(() => {
+        const boxes = document.querySelectorAll(".box");
+        boxes.forEach((box, i) => {
+          const hue = ((i * 360) / 64 + Date.now() / 20) % 360;
+          box.style.setProperty("--hue", hue);
+        });
+      }, 50);
+    </script>
+  </body>
+</html>

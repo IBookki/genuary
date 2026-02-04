@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary - Day 15: Invisible object - shadows only</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function setup() {
+        createCanvas(800, 800);
+      }
+
+      function draw() {
+        background(200);
+
+        // Light source
+        let lightX = width / 2 + sin(frameCount * 0.01) * 200;
+        let lightY = height / 4;
+
+        // Shadow of invisible sphere
+        let sphereX = width / 2;
+        let sphereY = height / 2;
+        let sphereRadius = 100;
+
+        // Cast shadow
+        stroke(50);
+        strokeWeight(3);
+        noFill();
+
+        // Calculate shadow projection
+        let shadowX = sphereX + (sphereX - lightX) * 0.5;
+        let shadowY = sphereY + (sphereY - lightY) * 2;
+
+        // Draw shadow ellipse
+        fill(0, 0, 0, 100);
+        ellipse(shadowX, shadowY, sphereRadius * 3, sphereRadius * 0.8);
+
+        // Draw shadow of invisible cube
+        let cubeX = width * 0.2;
+        let cubeY = height / 2;
+        let cubeSize = 80;
+
+        let cubeShadowX = cubeX + (cubeX - lightX) * 0.5;
+        let cubeShadowY = cubeY + (cubeY - lightY) * 2;
+
+        fill(0, 0, 0, 80);
+        rect(cubeShadowX - cubeSize, cubeShadowY, cubeSize * 2, cubeSize * 0.6);
+
+        // Light source indicator
+        fill(255, 200, 0);
+        stroke(255, 100, 0);
+        strokeWeight(2);
+        circle(lightX, lightY, 20);
+
+        // Instructions
+        fill(0);
+        textSize(16);
+        text("Only shadows visible - the objects are invisible!", 20, 30);
+      }
+    </script>
+  </body>
+</html>
