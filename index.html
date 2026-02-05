@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Genuary 2026 - Galerie Complète</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        color: white;
+        margin-bottom: 50px;
+      }
+
+      h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+      }
+
+      .day-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .day-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      }
+
+      .day-card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .day-number {
+        font-size: 2em;
+        font-weight: bold;
+      }
+
+      .day-title {
+        font-size: 0.95em;
+        margin-top: 8px;
+        opacity: 0.9;
+      }
+
+      .day-card-preview {
+        width: 100%;
+        height: 200px;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 0.9em;
+        overflow: hidden;
+        flex-grow: 1;
+      }
+
+      .day-card-preview iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        pointer-events: none;
+      }
+
+      .day-card-footer {
+        padding: 15px;
+        text-align: center;
+        border-top: 1px solid #eee;
+        background: #fafafa;
+      }
+
+      .day-card-link {
+        display: inline-block;
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .day-card-link:hover {
+        color: #764ba2;
+      }
+
+      .stats {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 30px;
+        backdrop-filter: blur(10px);
+      }
+
+      .stats-number {
+        font-size: 2em;
+        font-weight: bold;
+      }
+
+      /* ChatBot Styles */
+      .chatbot-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+
+      .chatbot-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .chatbot-button:active {
+        transform: scale(0.95);
+      }
+
+      .chatbot-modal {
+        display: none;
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 400px;
+        height: 600px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        flex-direction: column;
+        animation: slideUp 0.3s ease;
+      }
+
+      .chatbot-modal.active {
+        display: flex;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chatbot-modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 15px 15px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .chatbot-modal-header h3 {
+        margin: 0;
+        font-size: 1.1em;
+      }
+
+      .chatbot-close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .message {
+        display: flex;
+        gap: 8px;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.user {
+        justify-content: flex-end;
+      }
+
+      .message-content {
+        max-width: 70%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        word-wrap: break-word;
+        font-size: 0.9em;
+      }
+
+      .message.bot .message-content {
+        background: #f0f0f0;
+        color: #333;
+        border-left: 3px solid #667eea;
+      }
+
+      .message.user .message-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .bot-avatar {
+        width: 25px;
+        height: 25px;
+        background: #667eea;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.8em;
+      }
+
+      .user-avatar {
+        width: 25px;
+        height: 25px;
+        background: #764ba2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.8em;
+      }
+
+      .message.user .user-avatar {
+        order: 2;
+      }
+
+      .message.user .message-content {
+        order: 1;
+      }
+
+      .chatbot-input-area {
+        padding: 12px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 8px;
+      }
+
+      .chatbot-input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.9em;
+        font-family: inherit;
+      }
+
+      .chatbot-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .chatbot-send-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: transform 0.2s;
+      }
+
+      .chatbot-send-btn:hover {
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2em;
+        }
+
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+
+        .chatbot-modal {
+          width: calc(100% - 20px);
+          height: 500px;
+          bottom: 80px;
+          right: 10px;
+        }
+
+        .chatbot-button {
+          bottom: 20px;
+          right: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🎨 Genuary 2026</h1>
+        <p class="subtitle">Une exploration générative du mois</p>
+      </header>
+
+      <div class="gallery" id="gallery"></div>
+
+      <div class="stats">
+        <p>
+          Créations complétées:
+          <span class="stats-number" id="dayCount">0</span> / 31
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const dayCount = 31;
+      const gallery = document.getElementById("gallery");
+
+      const dayTitles = {
+        1: "One color, one shape",
+        2: "Twelve principles of animation",
+        3: "Texture",
+        4: "Interference patterns",
+        5: "Isometric",
+        6: "Seeded randomness",
+        7: "High contrast",
+        8: "Signed distance functions",
+        9: "Recursive tree",
+        10: "Generative typography",
+        11: "Space colonization",
+        12: "Tessellation",
+        13: "Weaving",
+        14: "Chromatic aberration",
+        15: "Shadows",
+        16: "Reflection",
+        17: "Perspective",
+        18: "Collision",
+        19: "Black and white",
+        20: "Generative architecture",
+        21: "Fractals",
+        22: "Symmetry",
+        23: "Parametric design",
+        24: "Permutations",
+        25: "Slime mold",
+        26: "Delaunay triangulation",
+        27: "Flowers",
+        28: "Wool fibers",
+        29: "Broken symmetry",
+        30: "Generative music",
+        31: "Zen",
+      };
+
+      for (let day = 1; day <= dayCount; day++) {
+        const dayFile = `day_${String(day).padStart(2, "0")}.html`;
+        const card = document.createElement("div");
+        card.className = "day-card";
+        card.innerHTML = `
+                <div class="day-card-header">
+                    <div class="day-number">Day ${day}</div>
+                    <div class="day-title">${dayTitles[day] || ""}</div>
+                </div>
+                <div class="day-card-preview">
+                    <iframe src="${dayFile}" title="Day ${day}" loading="lazy"></iframe>
+                </div>
+                <div class="day-card-footer">
+                    <a href="${dayFile}" class="day-card-link" target="_blank">Voir en grand →</a>
+                </div>
+            `;
+        gallery.appendChild(card);
+      }
+
+      document.getElementById("dayCount").textContent = dayCount;
+
+      // ChatBot Integration
+      const knowledgeBase = {
+        "comment utilise-t-on p5.js": {
+          answer:
+            "p5.js est utilisé dans tous les projets Genuary. On l'inclut via une balise <script> CDN et on définit deux fonctions principales:\n\n• setup(): appelée une fois au démarrage pour initialiser le canvas\n• draw(): appelée en boucle (par défaut 60 fois par seconde) pour dessiner\n\nExemple:\nfunction setup() {\n  createCanvas(800, 800);\n}\n\nfunction draw() {\n  background(255);\n  circle(400, 400, 100);\n}",
+        },
+        "qu'est-ce que la graine aléatoire": {
+          answer:
+            "La graine aléatoire (randomSeed) définit le point de départ du générateur de nombres aléatoires.\n\nAvantage: Les mêmes résultats sont reproduits chaque fois!\n\nExemple:\nrandomSeed(42);\ncircle(random(100, 700), random(100, 700), 50);\n\nSi vous exécutez ce code plusieurs fois avec la même seed, le cercle sera toujours au même endroit.",
+        },
+        "comment créer des animations": {
+          answer:
+            "Les animations se font en modifiant les variables chaque frame dans draw():\n\nlet angle = 0;\n\nfunction draw() {\n  background(255);\n  angle += 0.05;\n  \n  push();\n  translate(400, 400);\n  rotate(angle);\n  rect(0, 0, 100, 50);\n  pop();\n}\n\nLa fonction draw() s'appelle 60 fois/seconde, créant ainsi une animation fluide.",
+        },
+        "qu'est-ce que push et pop": {
+          answer:
+            "push() et pop() sauvegardent/restaurent l'état de transformation (position, rotation, échelle):\n\npush();\ntranslate(100, 100);\nrotate(PI/4);\ncircle(0, 0, 50);\npop();\n\ncircle(200, 200, 50);\n\nC'est très utile pour dessiner des formes complexes sans que les transformations s'accumulent.",
+        },
+        "comment utilise-t-on translate et rotate": {
+          answer:
+            "translate(x, y) déplace le système de coordonnées.\nrotate(angle) fait tourner le système de coordonnées.\n\nExemple:\npush();\ntranslate(400, 400);\nrotate(frameCount * 0.01);\nrect(-50, -50, 100, 100);\npop();",
+        },
+        "qu'est-ce que framecount": {
+          answer:
+            "frameCount est une variable globale en p5.js qui compte le nombre de frames dessinées depuis le démarrage.\n\nExemples:\n• Créer des animations: rotate(frameCount * 0.01)\n• Créer du clignotement: if (frameCount % 60 < 30)\n• Contrôler la vitesse: let speed = frameCount * 2;",
+        },
+        "comment générer des formes aléatoires": {
+          answer:
+            "Utilisez random() pour créer de la variabilité:\n\nlet x = random(width);\nlet y = random(height);\ncircle(x, y, 50);\n\nlet size = random(20, 100);\nsquare(400, 400, size);\n\nPour des résultats reproductibles, utilisez randomSeed() avant random()!",
+        },
+        "qu'est-ce que les boucles for": {
+          answer:
+            "Les boucles for répètent du code un nombre de fois:\n\nfor (let i = 0; i < 10; i++) {\n  circle(i * 50, 200, 20);\n}\n\nUtile pour créer des grilles, des motifs répétitifs, ou n'importe quel ensemble de formes.",
+        },
+        "comment utilise-t-on map": {
+          answer:
+            "map() convertit une valeur d'une plage à une autre:\n\nmap(value, start1, stop1, start2, stop2)\n\nExemple:\nlet y = map(mouseY, 0, height, 0, 255);\nfill(y);\ncircle(400, 400, 100);",
+        },
+        "comment utiliser le bruit de perlin": {
+          answer:
+            "Le bruit de Perlin crée des variations naturelles et fluides:\n\nlet x = map(noise(frameCount * 0.01, 0), 0, 1, 0, width);\nlet y = map(noise(frameCount * 0.01, 100), 0, 1, 0, height);\ncircle(x, y, 50);\n\nLe bruit de Perlin donne des mouvements plus naturels que random().",
+        },
+      };
+
+      const chatbotButton = document.createElement("button");
+      chatbotButton.className = "chatbot-button";
+      chatbotButton.innerHTML = "💬";
+      chatbotButton.onclick = () => {
+        const modal = document.getElementById("chatbot-modal");
+        modal.classList.add("active");
+      };
+      document.body.appendChild(chatbotButton);
+
+      const chatbotModal = document.createElement("div");
+      chatbotModal.id = "chatbot-modal";
+      chatbotModal.className = "chatbot-modal";
+      chatbotModal.innerHTML = `
+        <div class="chatbot-modal-header">
+          <h3>🤖 ChatBot Genuary</h3>
+          <button class="chatbot-close-btn">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot">
+            <div class="bot-avatar">🤖</div>
+            <div class="message-content">
+              Bonjour! 👋 Je peux répondre à vos questions sur le code p5.js des créations.
+            </div>
+          </div>
+        </div>
+        <div class="chatbot-input-area">
+          <form id="chatForm" style="display: flex; gap: 8px; width: 100%;">
+            <input type="text" class="chatbot-input" id="chatInput" placeholder="Votre question...">
+            <button type="submit" class="chatbot-send-btn">Envoyer</button>
+          </form>
+        </div>
+      `;
+      document.body.appendChild(chatbotModal);
+
+      document.querySelector(".chatbot-close-btn").onclick = () => {
+        chatbotModal.classList.remove("active");
+      };
+
+      const chatForm = document.getElementById("chatForm");
+      const chatInput = document.getElementById("chatInput");
+      const chatMessages = document.getElementById("chatMessages");
+
+      function addMessage(text, isUser) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${isUser ? "user" : "bot"}`;
+
+        const avatar = document.createElement("div");
+        avatar.className = isUser ? "user-avatar" : "bot-avatar";
+        avatar.textContent = isUser ? "👤" : "🤖";
+
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "message-content";
+        contentDiv.textContent = text;
+
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const question = chatInput.value.trim();
+        if (question) {
+          addMessage(question, true);
+          chatInput.value = "";
+
+          let found = false;
+          for (let [key, value] of Object.entries(knowledgeBase)) {
+            if (
+              question.toLowerCase().includes(key) ||
+              key.includes(question.toLowerCase())
+            ) {
+              found = true;
+              addMessage(value.answer, false);
+              break;
+            }
+          }
+
+          if (!found) {
+            addMessage(
+              "Désolé, je n'ai pas compris cette question. Essayez une question sur: p5.js, animations, transformations, formes aléatoires, boucles, etc.",
+              false,
+            );
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

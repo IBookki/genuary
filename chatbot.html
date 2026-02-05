@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatBot Genuary - Questions sur le Code</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .chat-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        max-height: 700px;
+      }
+
+      .chat-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+      }
+
+      .chat-header h1 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+      }
+
+      .chat-header p {
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .message {
+        display: flex;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.user {
+        justify-content: flex-end;
+      }
+
+      .message-content {
+        max-width: 70%;
+        padding: 12px 15px;
+        border-radius: 12px;
+        word-wrap: break-word;
+      }
+
+      .message.bot .message-content {
+        background: #f0f0f0;
+        color: #333;
+        border-left: 4px solid #667eea;
+      }
+
+      .message.user .message-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .chat-input-area {
+        padding: 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .suggested-questions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .suggested-btn {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s;
+        font-size: 0.9em;
+      }
+
+      .suggested-btn:hover {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+
+      .input-form {
+        display: flex;
+        gap: 10px;
+      }
+
+      .chat-input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1em;
+        font-family: inherit;
+        transition: border-color 0.2s;
+      }
+
+      .chat-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+      }
+
+      .send-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: transform 0.2s;
+      }
+
+      .send-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .send-btn:active {
+        transform: scale(0.95);
+      }
+
+      .bot-avatar {
+        width: 30px;
+        height: 30px;
+        background: #667eea;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .user-avatar {
+        width: 30px;
+        height: 30px;
+        background: #764ba2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .message.user .user-avatar {
+        order: 2;
+      }
+
+      .message.user .message-content {
+        order: 1;
+      }
+
+      .questions-label {
+        font-size: 0.85em;
+        color: #666;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      @media (max-width: 600px) {
+        .chat-container {
+          height: 90vh;
+          max-height: none;
+        }
+
+        .message-content {
+          max-width: 85%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <h1>🤖 ChatBot Genuary</h1>
+        <p>Posez vos questions sur le code et les créations</p>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot">
+          <div class="bot-avatar">🤖</div>
+          <div class="message-content">
+            Bonjour! 👋 Je suis le ChatBot Genuary. Je peux répondre à vos
+            questions sur le code des créations. Sélectionnez une question ou
+            posez-la directement!
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="suggested-questions" id="suggestedQuestions">
+          <div class="questions-label">Questions fréquentes:</div>
+        </div>
+
+        <form class="input-form" id="chatForm">
+          <input
+            type="text"
+            class="chat-input"
+            id="chatInput"
+            placeholder="Posez votre question..."
+            autocomplete="off"
+          />
+          <button type="submit" class="send-btn">Envoyer</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const knowledgeBase = {
+        "comment utilise-t-on p5.js": {
+          answer:
+            "p5.js est utilisé dans tous les projets Genuary. On l'inclut via une balise <script> CDN et on définit deux fonctions principales:\n\n• setup(): appelée une fois au démarrage pour initialiser le canvas\n• draw(): appelée en boucle (par défaut 60 fois par seconde) pour dessiner\n\nExemple:\nfunction setup() {\n  createCanvas(800, 800);\n}\n\nfunction draw() {\n  background(255);\n  circle(400, 400, 100);\n}",
+        },
+        "qu'est-ce que la graine aléatoire (seed)": {
+          answer:
+            "La graine aléatoire (randomSeed) définit le point de départ du générateur de nombres aléatoires.\n\nAvantage: Les mêmes résultats sont reproduits chaque fois!\n\nExemple:\nrandomSeed(42);\ncircle(random(100, 700), random(100, 700), 50);\n\nSi vous exécutez ce code plusieurs fois avec la même seed, le cercle sera toujours au même endroit.",
+        },
+        "comment créer des animations": {
+          answer:
+            "Les animations se font en modifiant les variables chaque frame dans draw():\n\nlet angle = 0;\n\nfunction draw() {\n  background(255);\n  angle += 0.05; // Incrementer l'angle\n  \n  push();\n  translate(400, 400);\n  rotate(angle);\n  rect(0, 0, 100, 50);\n  pop();\n}\n\nLa fonction draw() s'appelle 60 fois/seconde, créant ainsi une animation fluide.",
+        },
+        "qu'est-ce que push() et pop()": {
+          answer:
+            "push() et pop() sauvegardent/restaurent l'état de transformation (position, rotation, échelle):\n\npush(); // Sauvegarde l'état\ntranslate(100, 100); // Déplacer\nrotate(PI/4); // Rotation\ncircle(0, 0, 50);\npop(); // Restaurer l'état précédent\n\ncircle(200, 200, 50); // N'est pas affecté par les transformations précédentes\n\nC'est très utile pour dessiner des formes complexes sans que les transformations s'accumulent.",
+        },
+        "comment utilise-t-on translate et rotate": {
+          answer:
+            "translate(x, y) déplace le système de coordonnées:\n• Les coordonnées (0, 0) deviennent le point (x, y)\n• Tout ce qui suit est dessiné par rapport à ce nouveau point\n\nrotate(angle) fait tourner le système de coordonnées:\n• Utile pour tourner des formes sans calculer les nouvelles coordonnées\n• L'angle est en radians (PI = 180°)\n\nExemple combiné:\npush();\ntranslate(400, 400); // Centre du canvas\nrotate(frameCount * 0.01); // Rotation continue\nrect(-50, -50, 100, 100);\npop();",
+        },
+        "qu'est-ce que frameCount": {
+          answer:
+            "frameCount est une variable globale en p5.js qui compte le nombre de frames dessinées depuis le démarrage.\n\nExemples d'utilisation:\n• Créer des animations: rotate(frameCount * 0.01)\n• Créer du clignotement: if (frameCount % 60 < 30) { ... }\n• Contrôler la vitesse: let speed = frameCount * 2;\n\nPerfait pour créer des animations déterministes!",
+        },
+        "comment générer des formes aléatoires": {
+          answer:
+            "Utilisez random() pour créer de la variabilité:\n\n// Position aléatoire\nlet x = random(width);\nlet y = random(height);\ncircle(x, y, 50);\n\n// Taille aléatoire\nlet size = random(20, 100);\nsquare(400, 400, size);\n\n// Couleur aléatoire\nfill(random(255), random(255), random(255));\ncircle(x, y, size);\n\nPour des résultats reproductibles, utilisez randomSeed() avant random()!",
+        },
+        "qu'est-ce que les boucles for": {
+          answer:
+            "Les boucles for répètent du code un nombre de fois:\n\nfor (let i = 0; i < 10; i++) {\n  // Ce code s'exécute 10 fois\n  circle(i * 50, 200, 20);\n}\n\nParamètres:\n• let i = 0: initialisation du compteur\n• i < 10: condition (continue tant que vraie)\n• i++: incrémenter i après chaque itération\n\nUtile pour créer des grilles, des motifs répétitifs, ou n'importe quel ensemble de formes.",
+        },
+        "comment utilise-t-on map()": {
+          answer:
+            "map() convertit une valeur d'une plage à une autre:\n\nmap(value, start1, stop1, start2, stop2)\n\nExemple:\nlet y = map(mouseY, 0, height, 0, 255);\nfill(y); // Intensité change avec la position de la souris\ncircle(400, 400, 100);\n\nAutre exemple:\nlet scale = map(sin(frameCount * 0.05), -1, 1, 0.5, 2);\nscaleX(scale);\nscaleY(scale);",
+        },
+        "comment utiliser le bruit de perlin": {
+          answer:
+            "Le bruit de Perlin crée des variations naturelles et fluides:\n\nlet x = 0;\nlet y = noise(frameCount * 0.01);\n\nOu en 2D:\nlet x = map(noise(frameCount * 0.01, 0), 0, 1, 0, width);\nlet y = map(noise(frameCount * 0.01, 100), 0, 1, 0, height);\ncircle(x, y, 50);\n\nLe bruit de Perlin donne des mouvements plus naturels que random().",
+        },
+        "qu'est-ce que fill() et stroke()": {
+          answer:
+            "fill() définit la couleur de remplissage des formes:\nfill(255, 0, 0); // Rouge\ncircle(100, 100, 50);\n\nstroke() définit la couleur du contour:\nstroke(0); // Noir\nstrokeWeight(3);\ncircle(100, 100, 50);\n\nnoFill() enlève le remplissage:\nnoFill();\nstroke(0);\nrect(50, 50, 100, 100);\n\nnoStroke() enlève le contour.",
+        },
+        "retour à l'accueil": {
+          answer: "Redirection vers la galerie Genuary...",
+          redirect: true,
+        },
+      };
+
+      const suggestedQuestions = Object.keys(knowledgeBase);
+
+      const chatMessages = document.getElementById("chatMessages");
+      const chatForm = document.getElementById("chatForm");
+      const chatInput = document.getElementById("chatInput");
+      const suggestedQuestionsContainer =
+        document.getElementById("suggestedQuestions");
+
+      // Afficher les questions suggérées
+      suggestedQuestions.forEach((question) => {
+        const btn = document.createElement("button");
+        btn.className = "suggested-btn";
+        btn.textContent =
+          "💬 " + question.charAt(0).toUpperCase() + question.slice(1);
+        btn.type = "button";
+        btn.onclick = (e) => {
+          e.preventDefault();
+          chatInput.value = question;
+          submitQuestion(question);
+        };
+        suggestedQuestionsContainer.appendChild(btn);
+      });
+
+      function addMessage(text, isUser) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${isUser ? "user" : "bot"}`;
+
+        const avatar = document.createElement("div");
+        avatar.className = isUser ? "user-avatar" : "bot-avatar";
+        avatar.textContent = isUser ? "👤" : "🤖";
+
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "message-content";
+        contentDiv.textContent = text;
+
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+
+        // Scroll vers le bas
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function submitQuestion(question) {
+        const lowerQuestion = question.toLowerCase().trim();
+
+        // Ajouter la question de l'utilisateur
+        addMessage(question, true);
+        chatInput.value = "";
+
+        // Trouver la réponse
+        let found = false;
+        for (let [key, value] of Object.entries(knowledgeBase)) {
+          if (lowerQuestion.includes(key) || key.includes(lowerQuestion)) {
+            found = true;
+            if (value.redirect) {
+              window.location.href = "index.html";
+            } else {
+              addMessage(value.answer, false);
+            }
+            break;
+          }
+        }
+
+        if (!found) {
+          addMessage(
+            "Désolé, je n'ai pas compris cette question. Essayez une des questions suggérées ou posez une question sur:\n\n• p5.js\n• Les animations\n• Les transformations (translate, rotate)\n• Les formes aléatoires\n• Les boucles\n• Et bien d'autres!",
+            false,
+          );
+        }
+      }
+
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const question = chatInput.value.trim();
+        if (question) {
+          submitQuestion(question);
+        }
+      });
+
+      // Focus sur l'input au chargement
+      chatInput.focus();
+    </script>
+  </body>
+</html>
