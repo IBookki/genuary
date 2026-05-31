@@ -1,581 +1,553 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Genuary 2026 - Galerie Complète</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GENUARY 2026 — THÉO / IBOOKKI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 40px 20px;
-      }
+  :root {
+    --black: #0a0a0a;
+    --white: #f0ece4;
+    --red: #d42b2b;
+    --gray: #888;
+    --border: 1px solid #0a0a0a;
+  }
 
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-      }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      header {
-        text-align: center;
-        color: white;
-        margin-bottom: 50px;
-      }
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Courier Prime', monospace;
+    font-size: 15px;
+    line-height: 1.5;
+  }
 
-      h1 {
-        font-size: 3em;
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      }
+  a { color: var(--black); }
+  a:hover { color: var(--red); }
 
-      .subtitle {
-        font-size: 1.2em;
-        opacity: 0.9;
-      }
+  /* HEADER */
+  #masthead {
+    border-bottom: 3px solid var(--black);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  #masthead .title {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(22px, 5vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  #masthead .meta {
+    font-size: 12px;
+    color: var(--gray);
+    text-align: right;
+  }
 
-      .gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        margin-bottom: 40px;
-      }
+  /* MARQUEE */
+  .ticker {
+    border-bottom: var(--border);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 6px 0;
+    background: var(--black);
+    color: var(--white);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: scroll 40s linear infinite;
+  }
+  .ticker-inner span { margin: 0 40px; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-      .day-card {
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-      }
+  /* LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    min-height: calc(100vh - 120px);
+  }
 
-      .day-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-      }
+  /* MAIN */
+  main { border-right: 3px solid var(--black); }
 
-      .day-card-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        text-align: center;
-      }
+  .intro-block {
+    border-bottom: var(--border);
+    padding: 20px;
+  }
+  .intro-block h2 {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
+  .intro-block p {
+    font-size: 14px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  .intro-block p + p { margin-top: 8px; }
 
-      .day-number {
-        font-size: 2em;
-        font-weight: bold;
-      }
+  /* GALLERY */
+  .gallery-header {
+    border-bottom: var(--border);
+    padding: 12px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    display: flex;
+    justify-content: space-between;
+  }
 
-      .day-title {
-        font-size: 0.95em;
-        margin-top: 8px;
-        opacity: 0.9;
-      }
+  .day-list { }
+  .day-item {
+    border-bottom: var(--border);
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .day-item:hover { background: #e8e4dc; }
+  .day-item.active { background: var(--black); color: var(--white); }
+  .day-item.active a { color: var(--white); }
+  .day-num {
+    border-right: var(--border);
+    padding: 12px 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .day-item.active .day-num { border-right-color: #444; }
+  .day-info {
+    padding: 12px 16px;
+  }
+  .day-info .day-title {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .day-info .day-link {
+    font-size: 11px;
+    color: var(--gray);
+    text-decoration: none;
+    display: block;
+    margin-top: 2px;
+  }
+  .day-item.active .day-link { color: #aaa; }
+  .day-item.active .day-info .day-title { color: var(--white); }
 
-      .day-card-preview {
-        width: 100%;
-        height: 200px;
-        background: #f5f5f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #999;
-        font-size: 0.9em;
-        overflow: hidden;
-        flex-grow: 1;
-      }
+  /* SIDEBAR */
+  aside {
+    display: flex;
+    flex-direction: column;
+  }
 
-      .day-card-preview iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-        pointer-events: none;
-      }
+  .sidebar-section {
+    border-bottom: var(--border);
+    padding: 16px;
+  }
+  .sidebar-section h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
 
-      .day-card-footer {
-        padding: 15px;
-        text-align: center;
-        border-top: 1px solid #eee;
-        background: #fafafa;
-      }
+  /* PREVIEW */
+  .preview-box {
+    width: 100%;
+    height: 220px;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .preview-box iframe {
+    width: 200%;
+    height: 200%;
+    transform: scale(0.5);
+    transform-origin: top left;
+    border: none;
+    pointer-events: none;
+  }
+  .preview-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 6px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 
-      .day-card-link {
-        display: inline-block;
-        color: #667eea;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-      }
+  /* STATS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat {
+    border: var(--border);
+    padding: 10px;
+    text-align: center;
+  }
+  .stat .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    display: block;
+  }
+  .stat .desc {
+    font-size: 10px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 
-      .day-card-link:hover {
-        color: #764ba2;
-      }
+  /* CHATBOT */
+  .chat-toggle {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .chat-toggle:hover { background: #222; }
 
-      .stats {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        margin-top: 30px;
-        backdrop-filter: blur(10px);
-      }
+  .chat-window {
+    display: none;
+    flex-direction: column;
+    height: 380px;
+    border-top: var(--border);
+  }
+  .chat-window.open { display: flex; }
 
-      .stats-number {
-        font-size: 2em;
-        font-weight: bold;
-      }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--white);
+  }
 
-      /* ChatBot Styles */
-      .chatbot-button {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        font-size: 28px;
-        cursor: pointer;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 999;
-      }
+  .msg {
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 90%;
+  }
+  .msg.bot {
+    align-self: flex-start;
+  }
+  .msg.bot .bubble {
+    background: var(--black);
+    color: var(--white);
+    padding: 8px 12px;
+    font-family: 'Courier Prime', monospace;
+  }
+  .msg.user {
+    align-self: flex-end;
+  }
+  .msg.user .bubble {
+    background: #ddd8d0;
+    padding: 8px 12px;
+    font-family: 'Courier Prime', monospace;
+    color: var(--black);
+  }
+  .msg .who {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    margin-bottom: 3px;
+  }
+  .msg.user .who { text-align: right; }
 
-      .chatbot-button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-      }
+  .chat-input-row {
+    display: flex;
+    border-top: var(--border);
+  }
+  .chat-input-row input {
+    flex: 1;
+    border: none;
+    padding: 10px 12px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    background: var(--white);
+    color: var(--black);
+    outline: none;
+  }
+  .chat-input-row button {
+    border: none;
+    border-left: var(--border);
+    background: var(--black);
+    color: var(--white);
+    padding: 10px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+  }
+  .chat-input-row button:hover { background: var(--red); }
 
-      .chatbot-button:active {
-        transform: scale(0.95);
-      }
+  /* ABOUT */
+  .about-text {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .about-text a {
+    text-decoration: underline;
+    font-weight: 700;
+  }
 
-      .chatbot-modal {
-        display: none;
-        position: fixed;
-        bottom: 100px;
-        right: 30px;
-        width: 400px;
-        height: 600px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        flex-direction: column;
-        animation: slideUp 0.3s ease;
-      }
+  /* FOOTER */
+  footer {
+    border-top: 3px solid var(--black);
+    padding: 12px 20px;
+    font-size: 11px;
+    color: var(--gray);
+    font-family: 'Space Mono', monospace;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-      .chatbot-modal.active {
-        display: flex;
-      }
+  /* GLITCH on title hover */
+  #masthead .title:hover {
+    animation: glitch 0.3s steps(2, end) infinite;
+  }
+  @keyframes glitch {
+    0%   { text-shadow: 2px 0 var(--red), -2px 0 #00f; }
+    33%  { text-shadow: -2px 0 var(--red), 2px 0 #00f; clip-path: inset(30% 0 40% 0); }
+    66%  { text-shadow: 2px 2px var(--red); clip-path: inset(60% 0 10% 0); }
+    100% { text-shadow: none; clip-path: none; }
+  }
 
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+  @media (max-width: 700px) {
+    .layout { grid-template-columns: 1fr; }
+    main { border-right: none; }
+    aside { border-top: 3px solid var(--black); }
+    .preview-box { height: 160px; }
+  }
+</style>
+</head>
+<body>
 
-      .chatbot-modal-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px;
-        border-radius: 15px 15px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+<header id="masthead">
+  <div class="title">GENUARY<br>2026</div>
+  <div class="meta">
+    THÉO — IBOOKKI<br>
+    31 SKETCHES / 31 JOURS<br>
+    p5.js / ART GÉNÉRATIF<br>
+    <a href="https://github.com/IBookki/genuary" target="_blank">github.com/IBookki/genuary</a>
+  </div>
+</header>
 
-      .chatbot-modal-header h3 {
-        margin: 0;
-        font-size: 1.1em;
-      }
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>ONE COLOR ONE SHAPE</span><span>TWELVE PRINCIPLES OF ANIMATION</span><span>TEXTURE</span><span>INTERFERENCE PATTERNS</span><span>ISOMETRIC</span><span>SEEDED RANDOMNESS</span><span>HIGH CONTRAST</span><span>★ SIGNED DISTANCE FUNCTIONS ★</span><span>RECURSIVE TREE</span><span>GENERATIVE TYPOGRAPHY</span><span>SPACE COLONIZATION</span><span>TESSELLATION</span><span>WEAVING</span><span>CHROMATIC ABERRATION</span><span>SHADOWS</span><span>REFLECTION</span><span>PERSPECTIVE</span><span>COLLISION</span><span>BLACK AND WHITE</span><span>GENERATIVE ARCHITECTURE</span><span>FRACTALS</span><span>SYMMETRY</span><span>PARAMETRIC DESIGN</span><span>PERMUTATIONS</span><span>SLIME MOLD</span><span>DELAUNAY TRIANGULATION</span><span>FLOWERS</span><span>WOOL FIBERS</span><span>BROKEN SYMMETRY</span><span>GENERATIVE MUSIC</span><span>ZEN</span>
+    <span>ONE COLOR ONE SHAPE</span><span>TWELVE PRINCIPLES OF ANIMATION</span><span>TEXTURE</span><span>INTERFERENCE PATTERNS</span><span>ISOMETRIC</span><span>SEEDED RANDOMNESS</span><span>HIGH CONTRAST</span><span>★ SIGNED DISTANCE FUNCTIONS ★</span><span>RECURSIVE TREE</span><span>GENERATIVE TYPOGRAPHY</span><span>SPACE COLONIZATION</span><span>TESSELLATION</span><span>WEAVING</span><span>CHROMATIC ABERRATION</span><span>SHADOWS</span><span>REFLECTION</span><span>PERSPECTIVE</span><span>COLLISION</span><span>BLACK AND WHITE</span><span>GENERATIVE ARCHITECTURE</span><span>FRACTALS</span><span>SYMMETRY</span><span>PARAMETRIC DESIGN</span><span>PERMUTATIONS</span><span>SLIME MOLD</span><span>DELAUNAY TRIANGULATION</span><span>FLOWERS</span><span>WOOL FIBERS</span><span>BROKEN SYMMETRY</span><span>GENERATIVE MUSIC</span><span>ZEN</span>
+  </div>
+</div>
 
-      .chatbot-close-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-        padding: 0;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+<div class="layout">
+  <main>
+    <div class="intro-block">
+      <h2>// À propos de ce site</h2>
+      <p>Janvier 2026. Un prompt par jour. Un sketch p5.js par jour. Pas d'excuse, pas de rattrapage. Chaque pièce est une réponse à une contrainte — texture, distance, symétrie, chaos. Certaines sont laides. C'est bien.</p>
+      <p>Cliquez sur un jour pour le voir. Cliquez sur le lien pour l'ouvrir en grand. Le chatbot à droite parle du Day 08.</p>
+    </div>
 
-      .chat-messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
+    <div class="gallery-header">
+      <span>Index des 31 jours</span>
+      <span id="count-display">31 / 31 complétés</span>
+    </div>
 
-      .message {
-        display: flex;
-        gap: 8px;
-        animation: slideIn 0.3s ease;
-      }
+    <div class="day-list" id="dayList"></div>
+  </main>
 
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .message.user {
-        justify-content: flex-end;
-      }
-
-      .message-content {
-        max-width: 70%;
-        padding: 10px 12px;
-        border-radius: 10px;
-        word-wrap: break-word;
-        font-size: 0.9em;
-      }
-
-      .message.bot .message-content {
-        background: #f0f0f0;
-        color: #333;
-        border-left: 3px solid #667eea;
-      }
-
-      .message.user .message-content {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-      }
-
-      .bot-avatar {
-        width: 25px;
-        height: 25px;
-        background: #667eea;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        flex-shrink: 0;
-        font-size: 0.8em;
-      }
-
-      .user-avatar {
-        width: 25px;
-        height: 25px;
-        background: #764ba2;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        flex-shrink: 0;
-        font-size: 0.8em;
-      }
-
-      .message.user .user-avatar {
-        order: 2;
-      }
-
-      .message.user .message-content {
-        order: 1;
-      }
-
-      .chatbot-input-area {
-        padding: 12px;
-        border-top: 1px solid #eee;
-        display: flex;
-        gap: 8px;
-      }
-
-      .chatbot-input {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 0.9em;
-        font-family: inherit;
-      }
-
-      .chatbot-input:focus {
-        outline: none;
-        border-color: #667eea;
-      }
-
-      .chatbot-send-btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: transform 0.2s;
-      }
-
-      .chatbot-send-btn:hover {
-        transform: scale(1.05);
-      }
-
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 2em;
-        }
-
-        .gallery {
-          grid-template-columns: 1fr;
-        }
-
-        .chatbot-modal {
-          width: calc(100% - 20px);
-          height: 500px;
-          bottom: 80px;
-          right: 10px;
-        }
-
-        .chatbot-button {
-          bottom: 20px;
-          right: 20px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>🎨 Genuary 2026</h1>
-        <p class="subtitle">Une exploration générative du mois</p>
-      </header>
-
-      <div class="gallery" id="gallery"></div>
-
-      <div class="stats">
-        <p>
-          Créations complétées:
-          <span class="stats-number" id="dayCount">0</span> / 31
-        </p>
+  <aside>
+    <div class="sidebar-section" style="padding:0; border-bottom: var(--border);">
+      <div class="preview-box" id="previewBox">
+        <iframe id="previewFrame" src="day_08.html" title="Aperçu"></iframe>
+        <div class="preview-label" id="previewLabel">DAY 08 — SDF</div>
       </div>
     </div>
 
-    <script>
-      const dayCount = 31;
-      const gallery = document.getElementById("gallery");
+    <div class="sidebar-section">
+      <h3>Stats</h3>
+      <div class="stat-grid">
+        <div class="stat"><span class="num">31</span><span class="desc">Sketches</span></div>
+        <div class="stat"><span class="num">p5</span><span class="desc">Library</span></div>
+        <div class="stat"><span class="num">jan</span><span class="desc">2026</span></div>
+        <div class="stat"><span class="num">∞</span><span class="desc">Itérations</span></div>
+      </div>
+    </div>
 
-      const dayTitles = {
-        1: "One color, one shape",
-        2: "Twelve principles of animation",
-        3: "Texture",
-        4: "Interference patterns",
-        5: "Isometric",
-        6: "Seeded randomness",
-        7: "High contrast",
-        8: "Signed distance functions",
-        9: "Recursive tree",
-        10: "Generative typography",
-        11: "Space colonization",
-        12: "Tessellation",
-        13: "Weaving",
-        14: "Chromatic aberration",
-        15: "Shadows",
-        16: "Reflection",
-        17: "Perspective",
-        18: "Collision",
-        19: "Black and white",
-        20: "Generative architecture",
-        21: "Fractals",
-        22: "Symmetry",
-        23: "Parametric design",
-        24: "Permutations",
-        25: "Slime mold",
-        26: "Delaunay triangulation",
-        27: "Flowers",
-        28: "Wool fibers",
-        29: "Broken symmetry",
-        30: "Generative music",
-        31: "Zen",
-      };
-
-      for (let day = 1; day <= dayCount; day++) {
-        const dayFile = `day_${String(day).padStart(2, "0")}.html`;
-        const card = document.createElement("div");
-        card.className = "day-card";
-        card.innerHTML = `
-                <div class="day-card-header">
-                    <div class="day-number">Day ${day}</div>
-                    <div class="day-title">${dayTitles[day] || ""}</div>
-                </div>
-                <div class="day-card-preview">
-                    <iframe src="${dayFile}" title="Day ${day}" loading="lazy"></iframe>
-                </div>
-                <div class="day-card-footer">
-                    <a href="${dayFile}" class="day-card-link" target="_blank">Voir en grand →</a>
-                </div>
-            `;
-        gallery.appendChild(card);
-      }
-
-      document.getElementById("dayCount").textContent = dayCount;
-
-      // ChatBot Integration
-      const knowledgeBase = {
-        "comment utilise-t-on p5.js": {
-          answer:
-            "p5.js est utilisé dans tous les projets Genuary. On l'inclut via une balise <script> CDN et on définit deux fonctions principales:\n\n• setup(): appelée une fois au démarrage pour initialiser le canvas\n• draw(): appelée en boucle (par défaut 60 fois par seconde) pour dessiner\n\nExemple:\nfunction setup() {\n  createCanvas(800, 800);\n}\n\nfunction draw() {\n  background(255);\n  circle(400, 400, 100);\n}",
-        },
-        "qu'est-ce que la graine aléatoire": {
-          answer:
-            "La graine aléatoire (randomSeed) définit le point de départ du générateur de nombres aléatoires.\n\nAvantage: Les mêmes résultats sont reproduits chaque fois!\n\nExemple:\nrandomSeed(42);\ncircle(random(100, 700), random(100, 700), 50);\n\nSi vous exécutez ce code plusieurs fois avec la même seed, le cercle sera toujours au même endroit.",
-        },
-        "comment créer des animations": {
-          answer:
-            "Les animations se font en modifiant les variables chaque frame dans draw():\n\nlet angle = 0;\n\nfunction draw() {\n  background(255);\n  angle += 0.05;\n  \n  push();\n  translate(400, 400);\n  rotate(angle);\n  rect(0, 0, 100, 50);\n  pop();\n}\n\nLa fonction draw() s'appelle 60 fois/seconde, créant ainsi une animation fluide.",
-        },
-        "qu'est-ce que push et pop": {
-          answer:
-            "push() et pop() sauvegardent/restaurent l'état de transformation (position, rotation, échelle):\n\npush();\ntranslate(100, 100);\nrotate(PI/4);\ncircle(0, 0, 50);\npop();\n\ncircle(200, 200, 50);\n\nC'est très utile pour dessiner des formes complexes sans que les transformations s'accumulent.",
-        },
-        "comment utilise-t-on translate et rotate": {
-          answer:
-            "translate(x, y) déplace le système de coordonnées.\nrotate(angle) fait tourner le système de coordonnées.\n\nExemple:\npush();\ntranslate(400, 400);\nrotate(frameCount * 0.01);\nrect(-50, -50, 100, 100);\npop();",
-        },
-        "qu'est-ce que framecount": {
-          answer:
-            "frameCount est une variable globale en p5.js qui compte le nombre de frames dessinées depuis le démarrage.\n\nExemples:\n• Créer des animations: rotate(frameCount * 0.01)\n• Créer du clignotement: if (frameCount % 60 < 30)\n• Contrôler la vitesse: let speed = frameCount * 2;",
-        },
-        "comment générer des formes aléatoires": {
-          answer:
-            "Utilisez random() pour créer de la variabilité:\n\nlet x = random(width);\nlet y = random(height);\ncircle(x, y, 50);\n\nlet size = random(20, 100);\nsquare(400, 400, size);\n\nPour des résultats reproductibles, utilisez randomSeed() avant random()!",
-        },
-        "qu'est-ce que les boucles for": {
-          answer:
-            "Les boucles for répètent du code un nombre de fois:\n\nfor (let i = 0; i < 10; i++) {\n  circle(i * 50, 200, 20);\n}\n\nUtile pour créer des grilles, des motifs répétitifs, ou n'importe quel ensemble de formes.",
-        },
-        "comment utilise-t-on map": {
-          answer:
-            "map() convertit une valeur d'une plage à une autre:\n\nmap(value, start1, stop1, start2, stop2)\n\nExemple:\nlet y = map(mouseY, 0, height, 0, 255);\nfill(y);\ncircle(400, 400, 100);",
-        },
-        "comment utiliser le bruit de perlin": {
-          answer:
-            "Le bruit de Perlin crée des variations naturelles et fluides:\n\nlet x = map(noise(frameCount * 0.01, 0), 0, 1, 0, width);\nlet y = map(noise(frameCount * 0.01, 100), 0, 1, 0, height);\ncircle(x, y, 50);\n\nLe bruit de Perlin donne des mouvements plus naturels que random().",
-        },
-      };
-
-      const chatbotButton = document.createElement("button");
-      chatbotButton.className = "chatbot-button";
-      chatbotButton.innerHTML = "💬";
-      chatbotButton.onclick = () => {
-        const modal = document.getElementById("chatbot-modal");
-        modal.classList.add("active");
-      };
-      document.body.appendChild(chatbotButton);
-
-      const chatbotModal = document.createElement("div");
-      chatbotModal.id = "chatbot-modal";
-      chatbotModal.className = "chatbot-modal";
-      chatbotModal.innerHTML = `
-        <div class="chatbot-modal-header">
-          <h3>🤖 ChatBot Genuary</h3>
-          <button class="chatbot-close-btn">✕</button>
-        </div>
+    <div class="sidebar-section" style="padding: 0;">
+      <button class="chat-toggle" onclick="toggleChat(this)">
+        <span>// Chatbot — Day 08: SDF</span>
+        <span id="chat-arrow">▼</span>
+      </button>
+      <div class="chat-window open" id="chatWindow">
         <div class="chat-messages" id="chatMessages">
-          <div class="message bot">
-            <div class="bot-avatar">🤖</div>
-            <div class="message-content">
-              Bonjour! 👋 Je peux répondre à vos questions sur le code p5.js des créations.
-            </div>
+          <div class="msg bot">
+            <div class="who">SYSTÈME</div>
+            <div class="bubble">day_08. signed distance functions. la forme n'existe pas — seulement la distance à la forme.<br><br>posez-moi des questions sur ce sketch.</div>
           </div>
         </div>
-        <div class="chatbot-input-area">
-          <form id="chatForm" style="display: flex; gap: 8px; width: 100%;">
-            <input type="text" class="chatbot-input" id="chatInput" placeholder="Votre question...">
-            <button type="submit" class="chatbot-send-btn">Envoyer</button>
-          </form>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="votre question..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button onclick="sendMsg()">→</button>
         </div>
-      `;
-      document.body.appendChild(chatbotModal);
+      </div>
+    </div>
 
-      document.querySelector(".chatbot-close-btn").onclick = () => {
-        chatbotModal.classList.remove("active");
-      };
+    <div class="sidebar-section">
+      <h3>Contact</h3>
+      <div class="about-text">
+        <a href="https://github.com/IBookki/genuary" target="_blank">github.com/IBookki/genuary</a><br>
+        theo.jublou@edu.devinci.fr<br>
+        École Léonard de Vinci, Paris
+      </div>
+    </div>
+  </aside>
+</div>
 
-      const chatForm = document.getElementById("chatForm");
-      const chatInput = document.getElementById("chatInput");
-      const chatMessages = document.getElementById("chatMessages");
+<footer>
+  <span>GENUARY 2026 — THÉO / IBOOKKI</span>
+  <span>31 SKETCHES. AUCUN NE S'EXCUSE.</span>
+  <span><a href="https://github.com/IBookki/genuary" target="_blank">GITHUB ↗</a></span>
+</footer>
 
-      function addMessage(text, isUser) {
-        const messageDiv = document.createElement("div");
-        messageDiv.className = `message ${isUser ? "user" : "bot"}`;
+<script>
+const titles = {
+  1:"One color, one shape", 2:"Twelve principles of animation", 3:"Texture",
+  4:"Interference patterns", 5:"Isometric", 6:"Seeded randomness", 7:"High contrast",
+  8:"Signed distance functions", 9:"Recursive tree", 10:"Generative typography",
+  11:"Space colonization", 12:"Tessellation", 13:"Weaving", 14:"Chromatic aberration",
+  15:"Shadows", 16:"Reflection", 17:"Perspective", 18:"Collision", 19:"Black and white",
+  20:"Generative architecture", 21:"Fractals", 22:"Symmetry", 23:"Parametric design",
+  24:"Permutations", 25:"Slime mold", 26:"Delaunay triangulation", 27:"Flowers",
+  28:"Wool fibers", 29:"Broken symmetry", 30:"Generative music", 31:"Zen"
+};
 
-        const avatar = document.createElement("div");
-        avatar.className = isUser ? "user-avatar" : "bot-avatar";
-        avatar.textContent = isUser ? "👤" : "🤖";
+const list = document.getElementById('dayList');
+let activeDay = 8;
 
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "message-content";
-        contentDiv.textContent = text;
+for (let i = 1; i <= 31; i++) {
+  const file = `day_${String(i).padStart(2,'0')}.html`;
+  const item = document.createElement('div');
+  item.className = 'day-item' + (i === 8 ? ' active' : '');
+  item.dataset.day = i;
+  item.innerHTML = `
+    <div class="day-num">${String(i).padStart(2,'0')}</div>
+    <div class="day-info">
+      <div class="day-title">${titles[i]}</div>
+      <a class="day-link" href="${file}" target="_blank">Ouvrir en grand ↗</a>
+    </div>`;
+  item.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') return;
+    document.querySelectorAll('.day-item').forEach(el => el.classList.remove('active'));
+    item.classList.add('active');
+    activeDay = i;
+    document.getElementById('previewFrame').src = file;
+    document.getElementById('previewLabel').textContent = `DAY ${String(i).padStart(2,'0')} — ${titles[i].toUpperCase()}`;
+  });
+  list.appendChild(item);
+}
 
-        messageDiv.appendChild(avatar);
-        messageDiv.appendChild(contentDiv);
-        chatMessages.appendChild(messageDiv);
+function toggleChat(btn) {
+  const win = document.getElementById('chatWindow');
+  const arrow = document.getElementById('chat-arrow');
+  win.classList.toggle('open');
+  arrow.textContent = win.classList.contains('open') ? '▲' : '▼';
+}
 
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
+/* Non-AI chatbot — réponses scriptées sur Day 08 SDF */
+const KB = [
+  { k: ['sdf','signed distance','distance function','distance à','c\'est quoi'],
+    r: "une SDF (signed distance function) calcule, pour chaque pixel, sa distance au bord d'une forme. si la distance est négative : tu es à l'intérieur. si positive : à l'extérieur. la forme émerge de cette frontière. on ne la dessine pas — on la révèle." },
+  { k: ['comment','fonctionne','marche','code','p5'],
+    r: "dans ce sketch, pour chaque pixel (x,y) on calcule la distance à un cercle : length(pos - center) - radius. on colorie selon cette valeur. les bandes de couleur que tu vois sont des iso-contours — des lignes d'égale distance. c'est en p5.js, tout en GLSL-style dans le CPU." },
+  { k: ['pourquoi','choix','favori','préféré','aime'],
+    r: "c'est le seul sketch où la forme n'est jamais définie explicitement. il n'y a pas de rect(), pas de circle(). il y a seulement une règle mathématique. le résultat est une conséquence, pas une intention. ça me semble honnête." },
+  { k: ['couleur','palette','visuel','aspect','look'],
+    r: "noir, blanc, gris. les bords brûlent légèrement en rouge quand la distance approche zéro. c'est pas une décision esthétique — c'est le champ scalaire qui parle." },
+  { k: ['animation','bouge','mouvement','temps'],
+    r: "les formes dérivent lentement. le centre du cercle SDF oscille sur noise(frameCount * 0.01). le champ se déforme. la frontière respire." },
+  { k: ['combiner','union','intersection','soustraction','boolean'],
+    r: "les SDF se combinent algébriquement : union = min(d1,d2). intersection = max(d1,d2). soustraction = max(d1,-d2). c'est de l'algèbre booléenne sur des distances. dans le sketch day_08 il y a une union de 3 formes primitives." },
+  { k: ['github','lien','voir','code','source'],
+    r: "le code est là : github.com/IBookki/genuary — fichier day_08.html. tout est dans une seule page, sans dépendance externe sauf p5.js CDN." },
+  { k: ['autre','autres','jours','sketches','genuary'],
+    r: "il y a 31 sketches. day_21 (fractales) et day_26 (delaunay) sont techniquement les plus denses. day_07 (high contrast) est le plus brutal visuellement. day_31 (zen) ne fait presque rien — intentionnellement." },
+];
 
-      chatForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const question = chatInput.value.trim();
-        if (question) {
-          addMessage(question, true);
-          chatInput.value = "";
+function respond(q) {
+  const lower = q.toLowerCase();
+  for (const entry of KB) {
+    if (entry.k.some(kw => lower.includes(kw))) return entry.r;
+  }
+  return "question non reconnue. essayez : 'c'est quoi une SDF', 'comment ça fonctionne', 'pourquoi c'est ton favori', 'voir le code'.";
+}
 
-          let found = false;
-          for (let [key, value] of Object.entries(knowledgeBase)) {
-            if (
-              question.toLowerCase().includes(key) ||
-              key.includes(question.toLowerCase())
-            ) {
-              found = true;
-              addMessage(value.answer, false);
-              break;
-            }
-          }
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  const messages = document.getElementById('chatMessages');
 
-          if (!found) {
-            addMessage(
-              "Désolé, je n'ai pas compris cette question. Essayez une question sur: p5.js, animations, transformations, formes aléatoires, boucles, etc.",
-              false,
-            );
-          }
-        }
-      });
-    </script>
-  </body>
+  const userEl = document.createElement('div');
+  userEl.className = 'msg user';
+  userEl.innerHTML = `<div class="who">VOUS</div><div class="bubble">${q}</div>`;
+  messages.appendChild(userEl);
+
+  setTimeout(() => {
+    const botEl = document.createElement('div');
+    botEl.className = 'msg bot';
+    botEl.innerHTML = `<div class="who">SYSTÈME</div><div class="bubble">${respond(q)}</div>`;
+    messages.appendChild(botEl);
+    messages.scrollTop = messages.scrollHeight;
+  }, 300);
+
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+</body>
 </html>
