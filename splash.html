@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>THÉO — GENUARY 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --bg:#0a0a0a;
+  --fg:#f0ece4;
+  --red:#d42b2b;
+  --dim:#444;
+  --mid:#888;
+}
+
+html,body{
+  width:100%;height:100%;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Space Mono',monospace;
+  overflow:hidden;
+  cursor:crosshair;
+}
+
+/* NOISE OVERLAY */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.035;
+  pointer-events:none;
+  z-index:100;
+}
+
+/* SCANLINES */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+  pointer-events:none;
+  z-index:99;
+}
+
+/* GRID LINES */
+.grid{
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;
+  z-index:1;
+}
+
+/* MAIN CONTAINER */
+.screen{
+  position:fixed;inset:0;
+  display:flex;
+  flex-direction:column;
+  z-index:10;
+  padding:clamp(20px,4vw,60px);
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:auto;
+  opacity:0;
+  animation:fadein 0.4s 0.2s forwards;
+}
+.topbar-left{font-size:11px;color:var(--mid);line-height:1.8;}
+.topbar-right{font-size:11px;color:var(--mid);text-align:right;line-height:1.8;}
+.topbar-right a{color:var(--mid);text-decoration:none;}
+.topbar-right a:hover{color:var(--fg);}
+
+/* BIG TITLE */
+.hero{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:10;
+  width:90%;
+}
+
+.hero-label{
+  font-size:11px;
+  letter-spacing:0.3em;
+  color:var(--mid);
+  margin-bottom:20px;
+  opacity:0;
+  animation:fadein 0.4s 0.5s forwards;
+}
+
+.hero-title{
+  font-size:clamp(48px,13vw,160px);
+  font-weight:700;
+  line-height:0.9;
+  letter-spacing:-0.04em;
+  text-transform:uppercase;
+  opacity:0;
+  animation:fadein 0.3s 0.7s forwards;
+  position:relative;
+  display:inline-block;
+}
+
+.hero-title .line2{
+  color:transparent;
+  -webkit-text-stroke:1px var(--fg);
+  display:block;
+}
+
+.hero-sub{
+  font-size:clamp(11px,1.5vw,14px);
+  color:var(--mid);
+  margin-top:28px;
+  letter-spacing:0.1em;
+  opacity:0;
+  animation:fadein 0.4s 1s forwards;
+  line-height:1.8;
+}
+
+/* ENTER BUTTON */
+.enter-wrap{
+  margin-top:40px;
+  opacity:0;
+  animation:fadein 0.4s 1.4s forwards;
+}
+
+.enter-btn{
+  display:inline-block;
+  border:1px solid var(--fg);
+  padding:14px 40px;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--fg);
+  text-decoration:none;
+  cursor:pointer;
+  background:transparent;
+  transition:background 0.15s,color 0.15s;
+  position:relative;
+  overflow:hidden;
+}
+.enter-btn::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--fg);
+  transform:translateX(-101%);
+  transition:transform 0.2s;
+}
+.enter-btn:hover::before{transform:translateX(0);}
+.enter-btn:hover{color:var(--bg);}
+.enter-btn span{position:relative;z-index:1;}
+
+/* BOTTOM BAR */
+.bottombar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-top:auto;
+  opacity:0;
+  animation:fadein 0.4s 1.6s forwards;
+}
+
+.day-strip{
+  display:flex;
+  gap:3px;
+  flex-wrap:wrap;
+  max-width:600px;
+}
+.day-pip{
+  width:8px;height:8px;
+  background:var(--dim);
+  transition:background 0.1s;
+}
+.day-pip.lit{background:var(--fg);}
+.day-pip:hover{background:var(--red)!important;}
+
+.bottombar-right{
+  font-size:10px;
+  color:var(--dim);
+  text-align:right;
+  line-height:1.8;
+}
+
+/* GLITCH cursor-tracking highlight */
+.hero-title{
+  transition:text-shadow 0.05s;
+}
+
+/* COUNTER */
+.counter{
+  position:fixed;
+  bottom:clamp(20px,4vw,60px);
+  right:clamp(20px,4vw,60px);
+  font-size:clamp(60px,10vw,120px);
+  font-weight:700;
+  color:rgba(255,255,255,0.04);
+  line-height:1;
+  z-index:5;
+  pointer-events:none;
+  letter-spacing:-0.05em;
+}
+
+/* MOUSE FOLLOWER */
+.follower{
+  position:fixed;
+  width:1px;height:100vh;
+  background:rgba(255,255,255,0.04);
+  pointer-events:none;
+  z-index:8;
+  top:0;
+  transform:translateX(-9999px);
+  transition:transform 0.08s linear;
+}
+.follower-h{
+  position:fixed;
+  height:1px;width:100vw;
+  background:rgba(255,255,255,0.04);
+  pointer-events:none;
+  z-index:8;
+  left:0;
+  transform:translateY(-9999px);
+  transition:transform 0.08s linear;
+}
+
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:600px){
+  .topbar-right,.bottombar-right{display:none;}
+  .day-strip{max-width:200px;}
+}
+</style>
+</head>
+<body>
+
+<div class="grid"></div>
+<div class="follower" id="vline"></div>
+<div class="follower-h" id="hline"></div>
+<div class="counter" id="counter">31</div>
+
+<div class="screen">
+  <div class="topbar">
+    <div class="topbar-left">
+      THÉO / IBOOKKI<br>
+      ÉCOLE LÉONARD DE VINCI<br>
+      PARIS — 2026
+    </div>
+    <div class="topbar-right">
+      <a href="https://github.com/IBookki/genuary" target="_blank">GITHUB ↗</a><br>
+      theo.jublou@edu.devinci.fr<br>
+      ART GÉNÉRATIF
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label">— GENUARY 2026 —</div>
+    <div class="hero-title" id="heroTitle">
+      31<br>
+      <span class="line2">JOURS</span>
+    </div>
+    <div class="hero-sub">
+      31 SKETCHES p5.js &nbsp;/&nbsp; 31 CONTRAINTES &nbsp;/&nbsp; 0 EXCUSES<br>
+      TEXTURE · SDF · FRACTALES · DELAUNAY · SLIME MOLD · ZEN
+    </div>
+    <div class="enter-wrap">
+      <a class="enter-btn" href="index.html"><span>ENTRER DANS LA GALERIE →</span></a>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:6px;letter-spacing:0.15em;">31 SKETCHES COMPLÉTÉS</div>
+      <div class="day-strip" id="dayStrip"></div>
+    </div>
+    <div class="bottombar-right">
+      p5.js<br>
+      HTML / CANVAS<br>
+      JANVIER 2026
+    </div>
+  </div>
+</div>
+
+<script>
+/* Day pips */
+const strip = document.getElementById('dayStrip');
+for(let i=0;i<31;i++){
+  const pip=document.createElement('div');
+  pip.className='day-pip';
+  strip.appendChild(pip);
+  setTimeout(()=>pip.classList.add('lit'), 1600 + i*60);
+}
+
+/* Mouse crosshair */
+document.addEventListener('mousemove',e=>{
+  document.getElementById('vline').style.transform=`translateX(${e.clientX}px)`;
+  document.getElementById('hline').style.transform=`translateY(${e.clientY}px)`;
+});
+
+/* Counter counts down on scroll/move */
+let count=31;
+const counter=document.getElementById('counter');
+document.addEventListener('mousemove',()=>{
+  if(count>0){
+    count=Math.max(0,count-0.08);
+    counter.textContent=Math.ceil(count);
+  }
+});
+
+/* Glitch title on hover */
+const title=document.getElementById('heroTitle');
+title.addEventListener('mouseenter',()=>{
+  title.style.textShadow='3px 0 #d42b2b, -3px 0 #00f';
+  setTimeout(()=>title.style.textShadow='',200);
+});
+</script>
+</body>
+</html>
